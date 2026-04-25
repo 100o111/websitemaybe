@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mika Ben Amar - Official Website</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    background: #f2f2f2;
+    color: #111;
+  }
+
+  a { color: #1a0dab; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:visited { color: #609; }
+
+  /* ── cookie banner ── */
+  #cookie-banner {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    padding: 12px 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    font-size: 12px;
+    color: #444;
+  }
+  #cookie-banner p { flex: 1; line-height: 1.6; }
+  .cookie-btn {
+    border: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: bold;
+  }
+  .cookie-btn.primary { background: #1a73e8; color: #fff; }
+  .cookie-btn.secondary { background: #f1f3f4; color: #444; border: 1px solid #ddd; }
+
+  /* ── chatbot ── */
+  #chatbot {
+    position: fixed;
+    bottom: 70px; right: 16px;
+    z-index: 999;
+    text-align: right;
+  }
+  #chatbot-bubble {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    padding: 10px 12px;
+    font-size: 12px;
+    max-width: 190px;
+    margin-bottom: 6px;
+    text-align: left;
+    line-height: 1.6;
+    border-radius: 2px;
+    display: none;
+  }
+  #chatbot-btn {
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.4);
+  }
+
+  /* ── leaderboard ── */
+  .banner-top {
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 6px 0;
+    text-align: center;
+  }
+  .ad-leaderboard {
+    width: 728px;
+    height: 90px;
+    background: #f8fff8;
+    border: 1px solid #c8e6c9;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    line-height: 1.5;
+    position: relative;
+  }
+  .ad-leaderboard .ad-flag { position: absolute; top: 3px; right: 4px; font-size: 9px; color: #aaa; }
+  .ad-leaderboard .ad-tagline { font-size: 15px; font-weight: bold; color: #1a0dab; }
+  .ad-leaderboard .ad-sub { font-size: 11px; color: #555; }
+  .ad-leaderboard .ad-url { font-size: 10px; color: #080; margin-top: 2px; }
+  .ad-leaderboard .ad-cta {
+    margin-top: 5px;
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  /* ── sticky header ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .site-header h1 { font-size: 17px; font-weight: bold; color: #111; }
+  .verified { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 10px; padding: 1px 5px; border-radius: 2px; margin-left: 6px; }
+  .header-right { font-size: 11px; color: #888; }
+
+  /* ── nav ── */
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+  }
+  .navbar-links { display: flex; height: 100%; }
+  .navbar a {
+    color: #444; font-size: 13px;
+    padding: 0 14px;
+    display: flex; align-items: center;
+    border-bottom: 2px solid transparent; height: 100%;
+  }
+  .navbar a:hover, .navbar a.active { color: #1a73e8; border-bottom-color: #1a73e8; text-decoration: none; font-weight: bold; }
+  .navbar-right { font-size: 11px; color: #aaa; font-style: italic; }
+
+  /* ── layout ── */
+  .layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 12px 100px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* main gets much more space */
+  .main { flex: 1; min-width: 0; }
+  .sidebar { width: 160px; flex-shrink: 0; }
+
+  /* cards */
+  .card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 8px 14px;
+    border-bottom: 1px solid #e8e8e8;
+    font-weight: bold;
+    font-size: 12px;
+    color: #444;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-header .tag {
+    font-size: 10px; font-weight: normal;
+    color: #1a73e8; background: #e8f0fe;
+    padding: 1px 6px; border-radius: 10px;
+  }
+  .card-body { padding: 14px; line-height: 1.6; }
+  .card-body p + p { margin-top: 8px; }
+
+  /* notif */
+  .notif {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-left: 3px solid #1a73e8;
+    border-radius: 2px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dot { display: inline-block; width: 6px; height: 6px; background: #ea4335; border-radius: 50%; margin-right: 5px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* native ad */
+  .native-ad {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    position: relative;
+  }
+  .native-ad .sp { position: absolute; top: 6px; right: 8px; font-size: 9px; color: #aaa; }
+  .native-ad .ad-thumb {
+    width: 72px; height: 72px;
+    background: #f0f0f0;
+    flex-shrink: 0;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #bbb;
+  }
+  .native-ad .ad-body { flex: 1; }
+  .native-ad .ad-title { font-size: 13px; font-weight: bold; color: #111; margin-bottom: 2px; }
+  .native-ad .ad-text { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 3px; }
+  .native-ad .ad-meta { font-size: 10px; color: #080; }
+  .native-ad .ad-cta {
+    display: inline-block; margin-top: 5px;
+    background: #1a73e8; color: #fff;
+    border: none; font-family: Arial, sans-serif;
+    font-size: 11px; padding: 4px 10px;
+    cursor: pointer; border-radius: 2px;
+  }
+
+  /* ── WORKS ── */
+  .works-list { list-style: none; }
+  .works-list li { border-bottom: 1px solid #f0f0f0; }
+  .works-list li:last-child { border-bottom: none; }
+
+  button.wtitle {
+    background: none; border: none;
+    font-family: Arial, sans-serif;
+    font-size: 13px; color: #1a0dab;
+    cursor: pointer;
+    padding: 10px 14px;
+    display: block; width: 100%; text-align: left;
+  }
+  button.wtitle:hover { background: #f8f9ff; }
+
+  .wpanel {
+    display: none;
+    padding: 14px 14px 18px;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+  }
+  .wpanel.open { display: block; }
+
+  /* bigger images */
+  .images {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-bottom: 14px;
+  }
+  .images::-webkit-scrollbar { display: none; }
+
+  .img-slot {
+    flex-shrink: 0;
+    width: 300px;
+    height: 200px;
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #bbb;
+    font-size: 11px;
+  }
+  .img-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .wdesc {
+    font-size: 13px;
+    color: #222;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .wdesc .year { color: #aaa; font-size: 11px; margin-left: 5px; }
+
+  /* recommended */
+  .rec-items { display: flex; border-top: 1px solid #f0f0f0; }
+  .rec-item {
+    flex: 1; padding: 10px 14px;
+    border-right: 1px solid #f0f0f0;
+    font-size: 12px; cursor: pointer; line-height: 1.5;
+  }
+  .rec-item:last-child { border-right: none; }
+  .rec-item:hover { background: #f8f9ff; }
+  .rec-thumb {
+    width: 100%; height: 54px;
+    background: #eee; border-radius: 2px;
+    margin-bottom: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #bbb;
+  }
+  .rec-label { font-size: 10px; color: #aaa; margin-top: 2px; }
+
+  /* domains */
+  .domains-list { list-style: none; }
+  .domains-list li { padding: 6px 14px; border-bottom: 1px solid #f0f0f0; }
+  .domains-list li:last-child { border-bottom: none; }
+
+  /* ── sidebar ── */
+  .sidebar-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .sidebar-card .sh {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 11px; font-weight: bold; color: #555;
+    background: #fafafa;
+    display: flex; justify-content: space-between;
+  }
+  .sidebar-card .sh .why { font-weight: normal; color: #1a73e8; font-size: 10px; cursor: pointer; }
+  .sidebar-card .sb { padding: 8px 10px; font-size: 12px; line-height: 1.9; }
+
+  .ad-text-block { padding: 10px; font-size: 12px; line-height: 1.6; }
+  .ad-text-block .ath { font-size: 13px; font-weight: bold; color: #1a0dab; margin-bottom: 3px; }
+  .ad-text-block .atx { color: #555; margin-bottom: 4px; font-size: 11px; }
+  .ad-text-block .aurl { font-size: 10px; color: #080; }
+  .ad-text-block .acta {
+    display: block; margin-top: 7px;
+    background: #1a73e8; color: #fff;
+    border: none; font-family: Arial, sans-serif;
+    font-size: 11px; padding: 5px 10px;
+    cursor: pointer; border-radius: 2px;
+    width: 100%; text-align: center;
+  }
+
+  .sidebar-ad-img {
+    padding: 12px;
+    background: #fff8f0;
+    text-align: center;
+    font-size: 12px; line-height: 1.6; color: #333;
+  }
+  .sidebar-ad-img .big { font-size: 13px; font-weight: bold; color: #c0392b; display: block; margin-bottom: 4px; }
+  .sidebar-ad-img .cta {
+    display: block; margin-top: 8px;
+    background: #c0392b; color: #fff;
+    border: none; font-family: Arial, sans-serif;
+    font-size: 11px; padding: 5px 10px;
+    cursor: pointer; border-radius: 2px; width: 100%;
+  }
+
+  /* footer */
+  .site-footer {
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    color: #888; font-size: 11px;
+    text-align: center;
+    padding: 16px; margin-bottom: 52px; line-height: 2;
+  }
+  .site-footer a { color: #1a73e8; }
+</style>
+</head>
+<body>
+
+<div id="cookie-banner">
+  <p>We and our <a href="http://post.technology">247 partners</a> use cookies, device fingerprinting, behavioral profiling, and cross-site tracking to personalize content and serve targeted advertising. <a href="http://post.technology">Privacy Policy</a> · <a href="http://post.technology">Cookie Policy</a></p>
+  <button class="cookie-btn secondary" onclick="this.closest('#cookie-banner').style.display='none'">Manage preferences</button>
+  <button class="cookie-btn primary" onclick="this.closest('#cookie-banner').style.display='none'">Accept all</button>
+</div>
+
+<div id="chatbot">
+  <div id="chatbot-bubble">👋 Hi! I'm Mika's AI assistant.<br>How can I help you today?<br><br><a href="http://post.technology">Browse works</a> · <a href="http://post.technology">Contact</a></div>
+  <button id="chatbot-btn" onclick="var b=document.getElementById('chatbot-bubble');b.style.display=b.style.display==='block'?'none':'block'">💬 Chat with us</button>
+</div>
+
+<div class="banner-top">
+  <div class="ad-leaderboard">
+    <span class="ad-flag">Ad · <a href="http://post.technology">Why this ad?</a></span>
+    <div class="ad-tagline">The AI that works while you sleep.</div>
+    <div class="ad-sub">Automate everything. Outperform everyone. Free for 30 days.</div>
+    <div class="ad-url">post.technology</div>
+    <button class="ad-cta">Start free →</button>
+  </div>
+</div>
+
+<div class="site-header">
+  <div>
+    <h1>Mika Ben Amar <span class="verified">✓ Verified</span></h1>
+  </div>
+  <div class="header-right">312 profile views this month &nbsp;·&nbsp; ★★★★★ 4.9</div>
+</div>
+
+<div class="navbar">
+  <div class="navbar-right">Content personalized based on your location &amp; browsing history</div>
+</div>
+
+<div class="layout">
+
+  <div class="main">
+
+    <div class="notif">
+      <span><span class="dot"></span><strong>4 people</strong> are viewing this profile right now</span>
+      <span style="color:#bbb;font-size:10px;">Updated 2 min ago</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header">About <span class="tag">✦ Personalized for you</span></div>
+      <div class="card-body">
+        <p>Mika Ben Amar is a Berlin-based artist working in the gap between what digital infrastructure knows about us and what we know about ourselves.</p>
+      </div>
+    </div>
+
+    <div class="native-ad">
+      <span class="sp">Sponsored · <a href="http://post.technology">Why this ad?</a></span>
+      <div class="ad-thumb">img</div>
+      <div class="ad-body">
+        <div class="ad-title">Your next employee doesn't need health insurance.</div>
+        <div class="ad-text">AI agents that write, research, code, and decide. Available 24/7. Starting at $0.</div>
+        <div class="ad-meta">post.technology</div>
+        <button class="ad-cta">Try for free →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Selected Works <span class="tag">Ranked for you</span></div>
+      <ul class="works-list">
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; internet.flowers</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">A Chrome extension with a trained computer vision model that extracts flower images encountered during ordinary browsing. The collected flowers assemble into a personal digital garden and are sold as NFT bouquets.<span class="year">2022</span></div>
+          </div>
+        </li>
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; common charger directive</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">Anodized aluminum panels bearing stock images rendered entirely through USB-C port geometry. Floyd–Steinberg dithering translates photographic information into the industrial language of connector arrays.<span class="year">2024 – ongoing</span></div>
+          </div>
+        </li>
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; ad space</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">A Chrome extension that strips every website down to its advertising infrastructure alone — no content, no design, only the commercial skeleton.<span class="year">2023</span></div>
+          </div>
+        </li>
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; functional cross power strip</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">A power strip in the shape of a cross. It works. The outlets are live.<span class="year">2023</span></div>
+          </div>
+        </li>
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; designed for humans</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">Objects and interfaces bearing the phrase as their only justification. The claim examined as branding, as reassurance, as threat.<span class="year">2024</span></div>
+          </div>
+        </li>
+
+        <li>
+          <button class="wtitle" onclick="toggle(this)">&#9658;&nbsp; macbook sculptures</button>
+          <div class="wpanel">
+            <div class="images">
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+              <div class="img-slot"><img src="" alt=""><span>[ image ]</span></div>
+            </div>
+            <div class="wdesc">Large-scale minimal forms assembled from non-functional dummy MacBooks. Perceptually convincing at a distance. The deception is the work.<span class="year">2021 – ongoing</span></div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <div class="native-ad">
+      <span class="sp">Sponsored · <a href="http://post.technology">Why this ad?</a></span>
+      <div class="ad-thumb">img</div>
+      <div class="ad-body">
+        <div class="ad-title">This credit card pays you 5% back on everything. No cap.</div>
+        <div class="ad-text">Most Americans are leaving money on the table. See if you're approved in 60 seconds — no impact to your credit score.</div>
+        <div class="ad-meta">post.technology</div>
+        <button class="ad-cta">See my options →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Selected Domains I Own</div>
+      <ul class="domains-list">
+        <li><a href="https://cant.download" target="_blank">cant.download</a></li>
+        <li><a href="https://5g.technology" target="_blank">5g.technology</a></li>
+        <li><a href="http://beautiful-information.com" target="_blank">beautiful-information.com</a></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Recommended For You <span class="tag">Based on your recent activity</span></div>
+      <div class="rec-items">
+        <div class="rec-item">
+          <div class="rec-thumb">[ img ]</div>
+          internet.flowers
+          <div class="rec-label">Because you viewed: macbook sculptures</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-thumb">[ img ]</div>
+          ad space
+          <div class="rec-label">Trending in your region</div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-thumb">[ img ]</div>
+          common charger directive
+          <div class="rec-label">Users like you also viewed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Contact</div>
+      <ul class="domains-list">
+        <li><a href="mailto:i@cant.download">i@cant.download</a></li>
+        <li><a href="http://post.technology" target="_blank">instagram</a></li>
+        <li><a href="http://post.technology" target="_blank">twitter</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-card">
+      <div class="sh">Ad <span class="why">Why this ad?</span></div>
+      <div class="ad-text-block">
+        <div class="ath">Doctors don't want you to know this one trick.</div>
+        <div class="atx">Berlin residents are using this $9 method to eliminate belly fat. Results in 7 days.</div>
+        <div class="aurl">post.technology</div>
+        <button class="acta">See the trick →</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Quick Links</div>
+      <div class="sb">
+        <a href="mailto:i@cant.download">i@cant.download</a><br>
+        <a href="http://post.technology" target="_blank">instagram</a><br>
+        <a href="http://post.technology" target="_blank">twitter</a>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Sponsored <span class="why">×</span></div>
+      <div class="sidebar-ad-img">
+        <span class="big">⚠️ Your PC may be at risk.</span>
+        Run a free scan now. 3,847 threats detected on devices in your area today.
+        <button class="cta">Scan for free</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Ad <span class="why">Why this ad?</span></div>
+      <div class="ad-text-block">
+        <div class="ath">Earn up to $47/hour from home.</div>
+        <div class="atx">No experience needed. Companies are hiring in Berlin right now. Apply in 2 minutes.</div>
+        <div class="aurl">post.technology</div>
+        <button class="acta">Apply now</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Sponsored <span class="why">Why this ad?</span></div>
+      <div class="ad-text-block">
+        <div class="ath">She texted him first — here's what happened.</div>
+        <div class="atx">Dating coaches reveal the 3 texts that make any man obsessed. Free guide.</div>
+        <div class="aurl">post.technology</div>
+        <button class="acta">Get the guide</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Also Visit</div>
+      <div class="sb">
+        <a href="https://cant.download" target="_blank">cant.download</a><br>
+        <a href="http://beautiful-information.com" target="_blank">beautiful-information.com</a><br>
+        <a href="https://5g.technology" target="_blank">5g.technology</a>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sh">Ad <span class="why">Why this ad?</span></div>
+      <div class="ad-text-block">
+        <div class="ath">The photo storage app that actually works.</div>
+        <div class="atx">Stop losing your memories to iCloud limits. 1TB free for the first year.</div>
+        <div class="aurl">post.technology</div>
+        <button class="acta">Get 1TB free</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="site-footer">
+  © 2025 Mika Ben Amar. All rights reserved. &nbsp;·&nbsp;
+  <a href="http://post.technology">Privacy Policy</a> &nbsp;·&nbsp;
+  <a href="http://post.technology">Cookie Settings</a> &nbsp;·&nbsp;
+  <a href="http://post.technology">Do Not Sell My Personal Information</a> &nbsp;·&nbsp;
+  <a href="http://post.technology">Sitemap</a><br>
+  <span style="color:#bbb">Ads personalized based on your browsing history, location, device type, and inferred interests.</span>
+</div>
+
+<script>
+  document.querySelectorAll('.img-slot img').forEach(img => {
+    if (!img.getAttribute('src')) img.style.display = 'none';
+  });
+  function toggle(btn) {
+    const panel = btn.nextElementSibling;
+    const isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.wpanel.open').forEach(p => p.classList.remove('open'));
+    if (!isOpen) panel.classList.add('open');
+    btn.innerHTML = btn.innerHTML.replace(isOpen ? '&#9660;' : '&#9658;', isOpen ? '&#9658;' : '&#9660;');
+  }
+</script>
+</body>
+</html>
